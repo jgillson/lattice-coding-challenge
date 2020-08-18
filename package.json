@@ -1,0 +1,33 @@
+{
+  "name": "lattice-coding-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "DEBUG=true nyc mocha ./tests/**/*.test.js --exit --inspect=0.0.0.0:9229 --timeout 120000",
+    "start": "node app.js",
+    "start-dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgillson/lattice-coding-challenge.git"
+  },
+  "author": "John Gillson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jgillson/lattice-coding-challenge/issues"
+  },
+  "homepage": "https://github.com/jgillson/lattice-coding-challenge#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.1.1",
+    "nock": "^13.0.4",
+    "nodemon": "^2.0.4",
+    "nyc": "^15.1.0",
+    "sinon": "^9.0.3"
+  }
+}
