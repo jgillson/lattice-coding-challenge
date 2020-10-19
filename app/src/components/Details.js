@@ -1,57 +1,50 @@
-import React, { Component } from 'react'
+import React, {useState, useEffect} from 'react'
 import Poster from './Poster'
 
-class Details extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            details: {},
-            credits: {}
-        }
-    }
+const Details = (props) => {
+    let [details, setDetails] = useState({})
+    let [credits, setCredits] = useState({})
 
-    componentDidMount() {
+    useEffect(() => {
         const {
-            match: { params }
-        } = this.props
-        this.getDetails(params.movieId)
-        this.getCredits(params.movieId)
-    }
+            match: {params}
+        } = props
+        getDetails(params.movieId)
+        getCredits(params.movieId)
+    })
 
-    getDetails(movieId) {
+    const getDetails = (movieId) => {
         fetch(`/movie?id=${movieId}`)
-            .then(res => res.json())
+            .then(res =>
+                res.json())
             .then(res => {
-                console.log(res)
-                this.setState({ details: { ...res.data } })
+                setDetails(res.data)
             })
             .catch(err => {
                 console.log('ERROR', err)
             })
     }
 
-    getCredits(movieId) {
+    const getCredits = (movieId) => {
         fetch(`/movie?id=${movieId}/credits`)
-            .then(res => res.json())
+            .then(res =>
+                res.json())
             .then(res => {
-                console.log(res.data)
-                this.setState({ credits: { ...res.data } })
+                setCredits(res.data)
             })
             .catch(err => {
                 console.log('ERROR', err)
             })
     }
 
-    showDetails() {
-        const details = this.state.details
-
+    const showDetails = () => {
         return (
             <div>
                 <div>
                     <header>
                         <h1>{details.original_title}</h1>
                         <h4>Released: {details.release_date}</h4>
-                        <h3 style={{ marginTop: 'inherit', fontStyle: 'italic' }}>
+                        <h3 style={{marginTop: 'inherit', fontStyle: 'italic'}}>
                             {details.tagline}
                         </h3>
                         <p>{details.overview}</p>
@@ -67,49 +60,45 @@ class Details extends Component {
                 >
                     <Poster
                         title={details.original_title}
-                        posterPath={details.poster_path} />
+                        posterPath={details.poster_path}/>
                 </div>
             </div>
         )
     }
 
-    showCast() {
-        const credits = this.state.credits
-
+    const showCast = () => {
         let itemsToRender
         if (credits.cast) {
             itemsToRender = credits.cast.map(cast => {
                 return <div key={cast.id}>{cast.character} - {cast.name}</div>
             })
-        }
-        else {
+        } else {
             itemsToRender = "Loading..."
         }
-        return <div><h3>Cast</h3><div>{itemsToRender}</div></div>
+        return <div><h3>Cast</h3>
+            <div>{itemsToRender}</div>
+        </div>
     }
 
-    showCrew() {
-        const credits = this.state.credits
-
+    const showCrew = () => {
         let itemsToRender
         if (credits.crew) {
             itemsToRender = credits.crew.map(crew => {
                 return <div key={crew.id}>{crew.name} - {crew.department}</div>
             })
-        }
-        else {
+        } else {
             itemsToRender = "Loading..."
         }
-        return <div><h3>Crew</h3><div>{itemsToRender}</div></div>
-    }
-
-    render() {
-        return <div>
-            {this.showDetails()}
-            {this.showCast()}
-            {this.showCrew()}
+        return <div><h3>Crew</h3>
+            <div>{itemsToRender}</div>
         </div>
     }
+
+    return <div>
+        {showDetails()}
+        {showCast()}
+        {showCrew()}
+    </div>
 }
 
 export default Details
